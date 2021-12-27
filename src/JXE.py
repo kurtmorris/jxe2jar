@@ -180,8 +180,8 @@ class J9ROMClass(object):
                  interfaces, methods, fields, constant_pool
         ):
         super(J9ROMClass, self).__init__()
-        self.minor = minor
-        self.major = major
+        self.minor = 0 #minor
+        self.major = 50 #major
         self.class_name = class_name
         self.superclass_name = superclass_name
         self.access_flags = access_flags
