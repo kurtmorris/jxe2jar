@@ -185,7 +185,7 @@ def transform_bytecode(bytecode, cp):
             new_bytecode.append(opcode)
             padding = ((i + 1) % 4)
             padding = padding if padding == 0 else (4 - padding)
-            for j in xrange(padding):
+            for j in range(padding):
                 new_bytecode.append(0x0)
             i += padding + 1
             default = struct.unpack('<I', bytecode[i: i + 4])[0]
@@ -200,7 +200,7 @@ def transform_bytecode(bytecode, cp):
             tmp = struct.pack('>i', high)
             new_bytecode += tmp
             try:
-                for j in xrange(high - low + 1):
+                for j in range(high - low + 1):
                     i += 4
                     left = struct.unpack('<I', bytecode[i: i + 4])[0]
                     tmp = struct.pack('>I', left)
@@ -212,7 +212,7 @@ def transform_bytecode(bytecode, cp):
             new_bytecode.append(opcode)
             padding = ((i + 1) % 4)
             padding = padding if padding == 0 else (4 - padding)
-            for j in xrange(padding):
+            for j in range(padding):
                 new_bytecode.append(0x0)
             i += padding + 1
             default = struct.unpack('<I', bytecode[i: i + 4])[0]
@@ -222,7 +222,7 @@ def transform_bytecode(bytecode, cp):
             n = struct.unpack('<I', bytecode[i: i + 4])[0]
             tmp = struct.pack('>I', n)
             new_bytecode += tmp
-            for j in xrange(n):
+            for j in range(n):
                 i += 4
                 left = struct.unpack('<I', bytecode[i: i + 4])[0]
                 tmp = struct.pack('>I', left)

@@ -1,7 +1,7 @@
 import os
 import os.path
 import errno
-import StringIO
+import io
 import bitstring
 
 class StreamCursor(object):

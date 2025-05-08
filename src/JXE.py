@@ -79,7 +79,7 @@ class J9ROMMethod(object):
             return_type = stream.read_u8()
             stream.read_u8()
             args = []
-            for i in xrange(arg_count):
+            for i in range(arg_count):
                 args.append(stream.read_u32())
             if modifier & 0x2000000:
                 stream.read_u32()
@@ -107,8 +107,8 @@ class J9ROMMethod(object):
             if has_bytecode_extra:
                 caught_exception_count = stream.read_u16()
                 thrown_exception_count = stream.read_u16()
-                caught_exceptions = [J9ROMCatchException.read(stream) for i in xrange(caught_exception_count)]
-                thrown_exceptions = [J9ROMThrowException.read(stream) for i in xrange(thrown_exception_count)]
+                caught_exceptions = [J9ROMCatchException.read(stream) for i in range(caught_exception_count)]
+                thrown_exceptions = [J9ROMThrowException.read(stream) for i in range(thrown_exception_count)]
             else:
                 caught_exceptions = []
                 thrown_exceptions = []
@@ -203,15 +203,15 @@ class J9ROMClass(object):
             interface_count = stream.read_u32()
             interfaces_pointer = stream.read_relative()
             with StreamCursor(stream, interfaces_pointer):
-                interfaces = [J9ROMInterface.read(stream) for i in xrange(interface_count)]
+                interfaces = [J9ROMInterface.read(stream) for i in range(interface_count)]
             rom_method_count = stream.read_u32()
             rom_methods_pointer = stream.read_relative()
             with StreamCursor(stream, rom_methods_pointer):
-                methods = [J9ROMMethod.read(stream) for i in xrange(rom_method_count)]
+                methods = [J9ROMMethod.read(stream) for i in range(rom_method_count)]
             rom_field_count = stream.read_u32()
             rom_fields_pointer = stream.read_relative()
             with StreamCursor(stream, rom_fields_pointer):
-                fields = [J9ROMField.read(stream) for i in xrange(rom_field_count)]
+                fields = [J9ROMField.read(stream) for i in range(rom_field_count)]
             object_static_count = stream.read_u32()
             double_scalar_static_count = stream.read_u32()
             ram_constant_pool_count = stream.read_u32()
@@ -243,7 +243,7 @@ class J9ROMClass(object):
             base = stream.get()
             constant_pool_count = rom_constant_pool_count
             constant_pool = []
-            for i in xrange(constant_pool_count):
+            for i in range(constant_pool_count):
                 try:
                     constant_pool.append(J9ROMConstant.read(stream, base))
                 except EOFError:
@@ -275,7 +275,7 @@ class J9ROMImage(object):
         symbol_file_id = stream.read_bytes(0x10)
         pos = stream.get()
         stream.set(toc_pointer)
-        classes = [J9ROMClass.read(stream) for i in xrange(class_count)]
+        classes = [J9ROMClass.read(stream) for i in range(class_count)]
         stream.set(pos)
         return J9ROMImage(signature, flags_and_version, rom_size, symbol_file_id, classes)
 
