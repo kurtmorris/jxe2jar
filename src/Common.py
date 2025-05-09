@@ -21,7 +21,7 @@ class StreamCursor(object):
 
 class ReaderStream(object):
     def __init__(self, obj):
-        if isinstance(obj, file):
+        if isinstance(obj, io.IOBase):
             self._file_object_ = obj
             self._bit_stream_ = bitstring.BitStream(self._file_object_)
         elif isinstance(obj, bitstring.BitArray):

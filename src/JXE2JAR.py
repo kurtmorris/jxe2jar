@@ -3,12 +3,13 @@ import subprocess
 import sys
 import io
 import zipfile
+import traceback
 from Bytecode import transform_bytecode
 from ConstPool import *
 from JXE import *
 
 def dump_romclass(stream, romclass):
-    stream.write_raw_bytes('\xca\xfe\xba\xbe')
+    stream.write_raw_bytes(b'\xca\xfe\xba\xbe')
     stream.write_u16(romclass.minor)
     stream.write_u16(romclass.major)
     cp = ConstPool(romclass)
@@ -28,7 +29,7 @@ def dump_romclass(stream, romclass):
                 'attributes': []
             }
         )
-    code_attr_name_index = cp.add(CONST.Utf8, 'Code')
+    code_attr_name_index = cp.add(CONST.Utf8, b'Code')
     method_info_list = []
     for method in romclass.methods:
         bytecode = transform_bytecode(bytearray(method.bytecode), cp)
@@ -103,8 +104,8 @@ def dump_romclass(stream, romclass):
 
 def create_class(romclass, jarfile):
     class_name = romclass.class_name  # .replace('/', '.')
-    class_file = '{0}.class'.format(class_name)
-    f = io.StringIO()
+    class_file = '{0}.class'.format(class_name.decode('utf-8'))
+    f = io.BytesIO()
     stream = WriterStream(f)
     dump_romclass(stream, romclass)
     stream.write()
@@ -116,8 +117,9 @@ def create_jar(jar_name, jxe, decompilation_check=True):
         print('Creating class', romclass.class_name)
         try:
             create_class(romclass, jarfile)
-        except:
-            print('bad class, skip', romclass.class_name)
+        except Exception as e:
+            print(f'Error processing class {romclass.class_name}: {e}')
+            traceback.print_exc()
 
 def process(jxe_name, jar_name):
     with open(jxe_name, 'rb') as f:

@@ -71,12 +71,12 @@ def transform_bytecode(bytecode, cp):
             i += 3
         elif opcode in (JBOpcode.JBldc2lw,):
             index = struct.unpack('<H', bytecode[i + 1: i + 3])[0]
-            if cp.check_transform(index, '\x06'):
+            if cp.check_transform(index, b'\x06'):
                 new_bytecode.append(JBOpcode.JBldc2lw)
                 transform = cp.get_transform(index)
                 new_index = transform['new_index']
                 tmp = struct.pack('>H', new_index + 1)
-                new_cp_transform[new_index]= '\x05'
+                new_cp_transform[new_index]= b'\x05'
                 new_bytecode += tmp
             else:
                 new_bytecode.append(JBOpcode.JBldcw)
@@ -95,7 +95,7 @@ def transform_bytecode(bytecode, cp):
             transform = cp.get_transform(index)
             new_index = transform['new_index']
             tmp = struct.pack('>H', new_index + 1)
-            new_cp_transform[new_index] = '\x06'
+            new_cp_transform[new_index] = b'\x06'
             new_bytecode += tmp
             i += 3
         elif opcode in (JBOpcode.JBiincw,):
@@ -153,7 +153,7 @@ def transform_bytecode(bytecode, cp):
             transform = cp.get_transform(index)
             new_index = transform['new_index']
             tmp = struct.pack('>H', new_index + 1)
-            new_cp_transform[index] = '\x0b'
+            new_cp_transform[index] = b'\x0b'
             new_bytecode += tmp
             new_bytecode.append(0)
             new_bytecode.append(0)
